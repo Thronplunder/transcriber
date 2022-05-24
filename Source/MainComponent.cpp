@@ -38,6 +38,10 @@ MainComponent::MainComponent() : state(transportState::Stopped), fileLoaded(fals
     fft.init(frameSize);
     fftResultLeft.resize(fft.ComplexSize(frameSize));
     fftResultRight.resize(fft.ComplexSize(frameSize));
+
+    frameSize = controlField.getFrameSize();
+    synthesisHopSize = frameSize / 2;
+    analysisHopSize = synthesisHopSize / controlField.stretchValueSlider.getValue();
 }
 
 MainComponent::~MainComponent()
@@ -182,31 +186,19 @@ void MainComponent::buttonClicked(juce::Button* button) {
 
 void MainComponent::sliderValueChanged(juce::Slider* slider) {
     if (slider == &controlField.stretchValueSlider) {
-        stretchingFactor = slider->getValue();
+        setHopsizes();
     }
 }
 void MainComponent::comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged){
     if (comboBoxThatHasChanged == &controlField.analysisSizeComboBox) {
-        auto id = comboBoxThatHasChanged->getSelectedId();
-        switch (id) {
-        case 1:
-            frameSize = 512;
-            break;
-        case 2:
-            frameSize = 1024;
-            break;
-        case 3:
-            frameSize = 2048;
-            break;
-        case 4:
-            frameSize = 4096;
-
-        }
+        frameSize = controlField.getFrameSize();
+        setHopsizes();
         fft.init(frameSize);
         fftResultLeft.resize(fft.ComplexSize(frameSize));
         fftResultRight.resize(fft.ComplexSize(frameSize));
         analysisFrame.setSize(2, frameSize, false);
         windowFunction.resize(frameSize);
+
     }
 }
 
@@ -226,6 +218,8 @@ if (state != newState)
         transportField.fileButton.setEnabled(true);
         controlField.setEnabled(true);
         inBuffer.clear();
+        outBuffer.clear();
+        resetCounters();
         break;
 
     case transportState::Starting:                          // [4]
@@ -335,4 +329,20 @@ void MainComponent::fillOutputBuffer() {
     }
     outBufferWritePointer = (outBufferWritePointer + analysisHopSize) % outBuffer.getNumSamples();
     outPutHopCounter = 0;
+}
+
+void MainComponent::setHopsizes()
+{
+    synthesisHopSize = frameSize / 2;
+    analysisHopSize = synthesisHopSize / controlField.stretchValueSlider.getValue();
+    resetCounters();
+}
+
+void MainComponent::resetCounters()
+{
+    inputHopCounter = 0;
+    outPutHopCounter = 0;
+    inBufferPointer = 0;
+    outBufferReadPointer = 0;
+    outBufferWritePointer = analysisHopSize;
 }

@@ -59,6 +59,8 @@ private:
     void stopButtonClicked();
     void fillAnalysisFrame();
     void fillOutputBuffer();
+    void setHopsizes();
+    void resetCounters();
 
 
     static constexpr unsigned int bufferSize = 16384;
@@ -72,7 +74,6 @@ private:
 
     double audioLength;
     bool fileLoaded;
-    float stretchingFactor;
     Window<float> windowFunction;
     std::unique_ptr<juce::FileChooser> fileChooser;
     transportState state;
@@ -82,7 +83,7 @@ private:
     //inputBuffer
     juce::AudioBuffer<float> inBuffer;
     juce::uint64 inBufferPointer;
-    static constexpr unsigned int analysisHopSize = 256;
+    unsigned int analysisHopSize;
     juce::uint64 inputHopCounter;
     unsigned int analysisCounter = 0;
 
@@ -92,7 +93,7 @@ private:
     juce::AudioBuffer<float> outBuffer;
     juce::uint64 outBufferWritePointer;
     juce::uint64 outBufferReadPointer;
-    static constexpr unsigned int synthesisHopSize = 250;
+    unsigned int synthesisHopSize = 128;
     juce::uint64 outPutHopCounter;
 
     //==============================================================================
