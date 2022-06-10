@@ -64,7 +64,7 @@ private:
 
 
     static constexpr unsigned int bufferSize = 16384;
-    unsigned int frameSize = 1024;
+    unsigned int frameSize;
 
     juce::AudioFormatManager formatManager;
     std::unique_ptr<juce::AudioFormatReaderSource> fileReaderSource;

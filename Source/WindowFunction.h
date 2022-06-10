@@ -51,11 +51,16 @@ public:
         hannBuffer.resize(newSize);
         sineBuffer.resize(newSize);
         triangleBuffer.resize(newSize);
-        for (int i = 0; i < newSize; ++i) {
-            hannBuffer[i] = 0.5 * (1 - cos(2 * std::numbers::pi * ((float)i / newSize)));
-            sineBuffer[i] = sin(std::numbers::pi * ((float)i / newSize));
-            triangleBuffer[i] = 1 - std::abs((float)i / (newSize * 0.5) - 1);
+        size = newSize;
+        for (int i = 0; i < size; ++i) {
+            hannBuffer[i] = 0.5 * (1 - cos(2 * std::numbers::pi * ((float)i / size)));
+            sineBuffer[i] = sin(std::numbers::pi * ((float)i /size));
+            triangleBuffer[i] = 1 - std::abs((float)i / (size * 0.5) - 1);
         }
+    }
+
+    unsigned int getSize() {
+
     }
 private:
     unsigned int size;

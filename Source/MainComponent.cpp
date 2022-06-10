@@ -1,10 +1,21 @@
 #include "MainComponent.h"
 
 //==============================================================================
-MainComponent::MainComponent() : state(transportState::Stopped), fileLoaded(false), audioLength(0.f), 
-    inBuffer(2, bufferSize), outBuffer(2, bufferSize),  windowFunction(frameSize), analysisFrame(2, frameSize),
-    outBufferWritePointer(analysisHopSize), outBufferReadPointer(0), inBufferPointer(0), inputHopCounter(0),
-    fftResultLeft(frameSize), fftResultRight(frameSize), outPutHopCounter(0)
+MainComponent::MainComponent() : 
+    state(transportState::Stopped), 
+    fileLoaded(false), 
+    audioLength(0.f), 
+    inBuffer(2, bufferSize), 
+    outBuffer(2, bufferSize),  
+    windowFunction(frameSize), 
+    analysisFrame(2, frameSize), 
+    outBufferReadPointer(0), 
+    inBufferPointer(0), 
+    inputHopCounter(0),
+    fftResultLeft(frameSize), 
+    fftResultRight(frameSize), 
+    outPutHopCounter(0),
+    frameSize(1024)
 {
     // Make sure you set the size of the component after
     // you add any child components.
@@ -42,6 +53,7 @@ MainComponent::MainComponent() : state(transportState::Stopped), fileLoaded(fals
     frameSize = controlField.getFrameSize();
     synthesisHopSize = frameSize / 2;
     analysisHopSize = synthesisHopSize / controlField.stretchValueSlider.getValue();
+    outBufferWritePointer = analysisHopSize;
 }
 
 MainComponent::~MainComponent()
@@ -88,7 +100,7 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
                 auto writePointer = analysisFrame.getWritePointer(channelNum);
                 auto numSamples = analysisFrame.getNumSamples();
                 windowFunction.applyWindow(writePointer, numSamples, windowType::Hann);
-            }
+            }/*
             //hardcoding both channels because im lazy
             fft.fft(analysisFrame.getReadPointer(0), fftResultLeft.getRealPointer(), fftResultLeft.getImagPointer());
             fft.fft(analysisFrame.getReadPointer(1), fftResultRight.getRealPointer(), fftResultRight.getImagPointer());
@@ -98,7 +110,7 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
 
             //reverse fft
             fft.ifft(analysisFrame.getWritePointer(0), fftResultLeft.getRealPointer(), fftResultLeft.getImagPointer());
-            fft.ifft(analysisFrame.getWritePointer(1), fftResultRight.getRealPointer(), fftResultRight.getImagPointer());
+            fft.ifft(analysisFrame.getWritePointer(1), fftResultRight.getRealPointer(), fftResultRight.getImagPointer());*/
         }
         if (++outPutHopCounter == synthesisHopSize) {
             fillOutputBuffer();
