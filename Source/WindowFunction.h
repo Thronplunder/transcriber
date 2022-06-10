@@ -60,7 +60,7 @@ public:
     }
 
     unsigned int getSize() {
-
+        return size;
     }
 private:
     unsigned int size;
