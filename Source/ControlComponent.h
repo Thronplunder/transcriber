@@ -47,7 +47,6 @@ public:
             return 1024;
         case 3:
             return 2048;
-            
         case 4:
             return 4096;
         }

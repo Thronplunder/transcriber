@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "WindowFunction.h"
+#include <WindowFunction.h>
 
 TEST(WindowTest, ConstrctuctionWorks) {
 	Window<float> testWindow{256};
