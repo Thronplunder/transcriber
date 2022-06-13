@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../Source/WindowFunction.h"
+#include <WindowFunction.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
