@@ -13,17 +13,20 @@
 #include<vector>
 #include<numbers>
 #include<cmath>
+
 enum class windowType
 {
     Hann,
     Triangle,
     Sine
 };
+
 template<typename T >
 class Window {
 public:
     Window(unsigned int length) : size(length) {
-        //fill hannBuffer
+
+        //sets buffers to initial size and fills them 
         resize(length);
     };
 
@@ -52,7 +55,7 @@ public:
         sineBuffer.resize(newSize);
         triangleBuffer.resize(newSize);
         size = newSize;
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size; ++i) { //recalculate values
             hannBuffer[i] = 0.5 * (1 - cos(2 * std::numbers::pi * ((float)i / size)));
             sineBuffer[i] = sin(std::numbers::pi * ((float)i /size));
             triangleBuffer[i] = 1 - std::abs((float)i / (size * 0.5) - 1);
