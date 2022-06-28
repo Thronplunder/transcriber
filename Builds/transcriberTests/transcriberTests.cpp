@@ -43,5 +43,23 @@ namespace transcriberTests
 
 			Assert::AreEqual<int>(testWindow.getSize(), 512);
 		}
+
+		TEST_METHOD(TestUpperBound)
+		{
+			Window<float> testWindow{ 265 };
+			float testDataSine[265] = {1}; //1 initialised test data
+			float testDataHann[265] = {1}; //1 initialised test data
+			float testDataTri[265] = {1}; //1 initialised test data
+
+			testWindow.applyWindow(testDataSine, 256, windowType::Sine);
+			testWindow.applyWindow(testDataHann, 256, windowType::Hann);
+			testWindow.applyWindow(testDataTri, 256, windowType::Triangle);
+
+			for (int i = 0; i < 256; ++i) {
+				Assert::IsTrue(testDataSine[i] < 1.f);
+				Assert::IsTrue(testDataHann[i]< 1.f);
+				Assert::IsTrue(testDataTri[i]< 1.f);
+			}
+		}
 	};
 }

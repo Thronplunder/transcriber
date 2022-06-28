@@ -95,31 +95,39 @@ void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& buffe
         if (++inputHopCounter == analysisHopSize) {//do stuff once one hop on the input side is filled
             fillAnalysisFrame();
             inputHopCounter = 0;
+
             //apply window function
-            for (int channelNum = 0; channelNum < analysisFrame.getNumChannels(); ++channelNum) {
-                auto writePointer = analysisFrame.getWritePointer(channelNum);
-                auto numSamples = analysisFrame.getNumSamples();
-                windowFunction.applyWindow(writePointer, numSamples, windowType::Hann);
-            }/*
+            /*for (int windowChannelNum = 0; windowChannelNum < analysisFrame.getNumChannels(); ++windowChannelNum) {
+                auto windowWritePointer = analysisFrame.getWritePointer(windowChannelNum);
+                auto windowNumSamples = analysisFrame.getNumSamples();
+                windowFunction.applyWindow(windowWritePointer, windowNumSamples, windowType::Sine);
+            }*/
+
             //hardcoding both channels because im lazy
+            
             fft.fft(analysisFrame.getReadPointer(0), fftResultLeft.getRealPointer(), fftResultLeft.getImagPointer());
             fft.fft(analysisFrame.getReadPointer(1), fftResultRight.getRealPointer(), fftResultRight.getImagPointer());
+            
+
 
             //do more stuff
 
 
             //reverse fft
+            
             fft.ifft(analysisFrame.getWritePointer(0), fftResultLeft.getRealPointer(), fftResultLeft.getImagPointer());
-            fft.ifft(analysisFrame.getWritePointer(1), fftResultRight.getRealPointer(), fftResultRight.getImagPointer());*/
+            fft.ifft(analysisFrame.getWritePointer(1), fftResultRight.getRealPointer(), fftResultRight.getImagPointer());
+            
         }
         if (++outPutHopCounter == synthesisHopSize) {
             fillOutputBuffer();
+            outPutHopCounter = 0;
         }
 
         //write outputbuffer to actual output
-        for (unsigned int channelNum = 0; channelNum < bufferToFill.buffer->getNumChannels(); ++channelNum) {
-            bufferToFill.buffer->setSample(channelNum, sampleNum, outBuffer.getSample(channelNum, outBufferReadPointer));
-            outBuffer.setSample(channelNum, outBufferReadPointer, 0);
+        for (unsigned int outputChannelNum = 0; outputChannelNum < bufferToFill.buffer->getNumChannels(); ++outputChannelNum) {
+            bufferToFill.buffer->setSample(outputChannelNum, sampleNum, outBuffer.getSample(outputChannelNum, outBufferReadPointer));
+            outBuffer.setSample(outputChannelNum, outBufferReadPointer, 0);
         }
         outBufferReadPointer = (outBufferReadPointer + 1) % outBuffer.getNumSamples();
     }
@@ -340,7 +348,6 @@ void MainComponent::fillOutputBuffer() {
         }
     }
     outBufferWritePointer = (outBufferWritePointer + analysisHopSize) % outBuffer.getNumSamples();
-    outPutHopCounter = 0;
 }
 
 void MainComponent::setHopsizes()
