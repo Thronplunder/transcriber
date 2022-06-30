@@ -1,21 +1,22 @@
 #include "MainComponent.h"
 
 //==============================================================================
-MainComponent::MainComponent() : 
-    state(transportState::Stopped), 
-    fileLoaded(false), 
-    audioLength(0.f), 
-    inBuffer(2, bufferSize), 
-    outBuffer(2, bufferSize),  
-    windowFunction(frameSize), 
-    analysisFrame(2, frameSize), 
-    outBufferReadPointer(0), 
-    inBufferPointer(0), 
+MainComponent::MainComponent() :
+    state(transportState::Stopped),
+    fileLoaded(false),
+    audioLength(0.f),
+    inBuffer(2, bufferSize),
+    outBuffer(2, bufferSize),
+    windowFunction(frameSize),
+    analysisFrame(2, frameSize),
+    outBufferReadPointer(0),
+    inBufferPointer(0),
     inputHopCounter(0),
-    fftResultLeft(frameSize), 
-    fftResultRight(frameSize), 
+    fftResultLeft(frameSize),
+    fftResultRight(frameSize),
     outPutHopCounter(0),
-    frameSize(1024)
+    frameSize(1024),
+    analysisCounter(0)
 {
     // Make sure you set the size of the component after
     // you add any child components.
@@ -43,6 +44,8 @@ MainComponent::MainComponent() :
     transportField.fileButton.addListener(this);
 
     controlField.setBoundsRelative(0.51f, 0.01f, 0.49f, 0.1f);
+    controlField.analysisSizeComboBox.addListener(this);
+    controlField.stretchValueSlider.addListener(this);
     formatManager.registerBasicFormats();
     transportSource.addChangeListener(this);
     startTimer(50);
@@ -80,12 +83,12 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
 {
 
-    if (fileReaderSource.get() == nullptr)
+    if (fileReaderSource.get() == nullptr || state == transportState::Stopped)
     {
         bufferToFill.clearActiveBufferRegion();
         return;
     }
-
+    bufferToFill.clearActiveBufferRegion();
     transportSource.getNextAudioBlock(bufferToFill);
     for (unsigned int sampleNum = 0; sampleNum < bufferToFill.numSamples; ++sampleNum) {
         for (juce::uint64 channelNum = 0; channelNum < bufferToFill.buffer->getNumChannels(); ++channelNum) {//fill one frame of audio 

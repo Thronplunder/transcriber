@@ -85,7 +85,7 @@ private:
     juce::uint64 inBufferPointer;
     unsigned int analysisHopSize;
     juce::uint64 inputHopCounter;
-    unsigned int analysisCounter = 0;
+    unsigned int analysisCounter;
 
 
     //==============================================================================
@@ -93,7 +93,7 @@ private:
     juce::AudioBuffer<float> outBuffer;
     juce::uint64 outBufferWritePointer;
     juce::uint64 outBufferReadPointer;
-    unsigned int synthesisHopSize = 128;
+    unsigned int synthesisHopSize;
     juce::uint64 outPutHopCounter;
 
     //==============================================================================

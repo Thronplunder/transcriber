@@ -18,7 +18,7 @@ public:
         stretchValueSlider.setBoundsRelative(comboBoxRatio, 0.0f, sliderRatio, 1.0f);
         stretchValueSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
         stretchValueSlider.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::TextBoxLeft, true, 40, stretchValueSlider.getHeight());
-        stretchValueSlider.setRange(1.0, 2.0, 0.01);
+        stretchValueSlider.setRange(0.5, 1.0, 0.01);
         stretchValueSlider.setValue(1.0);
         addAndMakeVisible(analysisSizeComboBox);
         addAndMakeVisible(stretchValueSlider);
