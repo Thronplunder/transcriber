@@ -34,3 +34,4 @@
 # folders
 .vs/
 x64/
+build/
