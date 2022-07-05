@@ -1,0 +1,30 @@
+^C:\USERS\ALESS\DOCUMENTS\TRANSCRIBER\NEWPROJECT\BUILD\CMAKEFILES\8639AE43ED4B41BE1AC1E77928A1148C\RESOURCES.RC.RULE
+setlocal
+externals\JUCE\tools\extras\Build\juceaide\juceaide_artefacts\Debug\juceaide.exe rcfile C:/Users/aless/Documents/transcriber/NewProject/build/Transcriber_artefacts/JuceLibraryCode/Info.txt C:/Users/aless/Documents/transcriber/NewProject/build/Transcriber_artefacts/JuceLibraryCode/resources.rc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\ALESS\DOCUMENTS\TRANSCRIBER\NEWPROJECT\BUILD\CMAKEFILES\8639AE43ED4B41BE1AC1E77928A1148C\JUCEHEADER.H.RULE
+setlocal
+externals\JUCE\tools\extras\Build\juceaide\juceaide_artefacts\Debug\juceaide.exe header C:/Users/aless/Documents/transcriber/NewProject/build/Transcriber_artefacts/JuceLibraryCode/Debug/Defs.txt C:/Users/aless/Documents/transcriber/NewProject/build/Transcriber_artefacts/JuceLibraryCode/JuceHeader.h
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\ALESS\DOCUMENTS\TRANSCRIBER\NEWPROJECT\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/aless/Documents/transcriber/NewProject -BC:/Users/aless/Documents/transcriber/NewProject/build --check-stamp-file C:/Users/aless/Documents/transcriber/NewProject/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

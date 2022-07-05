@@ -1,0 +1,11 @@
+C:/Users/aless/Documents/transcriber/NewProject/build/CMakeFiles/Transcriber.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/CMakeFiles/INSTALL.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/externals/JUCE/CMakeFiles/INSTALL.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/externals/JUCE/CMakeFiles/ALL_BUILD.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/externals/JUCE/modules/CMakeFiles/INSTALL.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/externals/JUCE/modules/juce_audio_plugin_client/CMakeFiles/juce_lv2_helper.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/externals/JUCE/modules/juce_audio_plugin_client/CMakeFiles/INSTALL.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/externals/JUCE/extras/Build/CMakeFiles/INSTALL.dir
+C:/Users/aless/Documents/transcriber/NewProject/build/externals/JUCE/extras/Build/juceaide/CMakeFiles/INSTALL.dir

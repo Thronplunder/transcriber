@@ -1,0 +1,12 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.21/Modules/BasicConfigVersion-ExactVersion.cmake.in
+C:/Program Files/CMake/share/cmake-3.21/Modules/CMakeDependentOption.cmake
+C:/Program Files/CMake/share/cmake-3.21/Modules/CMakePackageConfigHelpers.cmake
+C:/Program Files/CMake/share/cmake-3.21/Modules/WriteBasicConfigVersionFile.cmake
+C:/Users/aless/Documents/transcriber/NewProject/build/CMakeFiles/cmake.verify_globs
+C:/Users/aless/Documents/transcriber/NewProject/externals/JUCE/CMakeLists.txt
+C:/Users/aless/Documents/transcriber/NewProject/externals/JUCE/extras/Build/CMake/JUCECheckAtomic.cmake
+C:/Users/aless/Documents/transcriber/NewProject/externals/JUCE/extras/Build/CMake/JUCEConfig.cmake.in
+C:/Users/aless/Documents/transcriber/NewProject/externals/JUCE/extras/Build/CMake/JUCEHelperTargets.cmake
+C:/Users/aless/Documents/transcriber/NewProject/externals/JUCE/extras/Build/CMake/JUCEModuleSupport.cmake
+C:/Users/aless/Documents/transcriber/NewProject/externals/JUCE/extras/Build/CMake/JUCEUtils.cmake
