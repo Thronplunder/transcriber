@@ -2,15 +2,15 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2020 - Raw Material Software Limited
+   Copyright (c) 2022 - Raw Material Software Limited
 
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   End User License Agreement: www.juce.com/juce-6-licence
+   End User License Agreement: www.juce.com/juce-7-licence
    Privacy Policy: www.juce.com/juce-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
@@ -55,15 +55,16 @@ public:
     //==============================================================================
     /** Sets the attack time in ms.
 
-        Attack times less that 0.001 will be snapped to zero and very long attack
+        Attack times less than 0.001 ms will be snapped to zero and very long attack
         times will eventually saturate depending on the numerical precision used.
     */
     void setAttackTime (SampleType attackTimeMs);
 
     /** Sets the release time in ms.
 
-        Release times less that 0.001 will be snapped to zero and very long release
-        times will eventually saturate depending on the numerical precision used.
+        Release times less than 0.001 ms will be snapped to zero and very long
+        release times will eventually saturate depending on the numerical precision
+        used.
     */
     void setReleaseTime (SampleType releaseTimeMs);
 
@@ -120,7 +121,7 @@ public:
                 outputSamples[i] = processSample ((int) channel, inputSamples[i]);
         }
 
-       #if JUCE_SNAP_TO_ZERO
+       #if JUCE_DSP_ENABLE_SNAP_TO_ZERO
         snapToZero();
        #endif
     }

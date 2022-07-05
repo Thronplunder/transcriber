@@ -2,15 +2,15 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2020 - Raw Material Software Limited
+   Copyright (c) 2022 - Raw Material Software Limited
 
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   End User License Agreement: www.juce.com/juce-6-licence
+   End User License Agreement: www.juce.com/juce-7-licence
    Privacy Policy: www.juce.com/juce-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
@@ -354,6 +354,7 @@ private:
         expectEquals (otherBuffer.getSample (1, 2), block.getSample (1, 3));
     }
 
+   #if JUCE_USE_SIMD
     template <typename T = SampleType>
     SIMDVoid<T> copyingTests()
     {
@@ -396,6 +397,7 @@ private:
             expectEquals (block.getSample (1, 3).get (1), numericData.getSample (1, (int) ((numSIMDElements * 2) + 1)));
         }
     }
+   #endif
 
     //==============================================================================
     template <typename T = SampleType>
@@ -491,8 +493,11 @@ private:
 
 static AudioBlockUnitTests<float> audioBlockFloatUnitTests;
 static AudioBlockUnitTests<double> audioBlockDoubleUnitTests;
+
+#if JUCE_USE_SIMD
 static AudioBlockUnitTests<SIMDRegister<float>> audioBlockSIMDFloatUnitTests;
 static AudioBlockUnitTests<SIMDRegister<double>> audioBlockSIMDDoubleUnitTests;
+#endif
 
 } // namespace dsp
 } // namespace juce

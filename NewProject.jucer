@@ -5,6 +5,9 @@
               cppLanguageStandard="20">
   <MAINGROUP id="bvIBdp" name="Transcriber">
     <GROUP id="{94C4B41B-060F-8AD4-A6C7-81DC2916ADE5}" name="Source">
+      <FILE id="PKHeXz" name="OLAStretch.h" compile="0" resource="0" file="Source/OLAStretch.h"/>
+      <FILE id="bXqnPW" name="BaseTimestretch.h" compile="0" resource="0"
+            file="Source/BaseTimestretch.h"/>
       <FILE id="tFrWpA" name="ControlComponent.h" compile="0" resource="0"
             file="Source/ControlComponent.h"/>
       <FILE id="HunKio" name="ComplexVector.h" compile="0" resource="0" file="Source/ComplexVector.h"/>

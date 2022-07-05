@@ -2,15 +2,15 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2020 - Raw Material Software Limited
+   Copyright (c) 2022 - Raw Material Software Limited
 
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   End User License Agreement: www.juce.com/juce-6-licence
+   End User License Agreement: www.juce.com/juce-7-licence
    Privacy Policy: www.juce.com/juce-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
@@ -68,7 +68,7 @@ void Phaser<SampleType>::setCentreFrequency (SampleType newCentreHz)
     jassert (isPositiveAndBelow (newCentreHz, static_cast<SampleType> (sampleRate * 0.5)));
 
     centreFrequency = newCentreHz;
-    normCentreFrequency = mapToLog10 (centreFrequency, static_cast<SampleType> (20.0), static_cast<SampleType> (jmin (20000.0, 0.49 * sampleRate)));
+    normCentreFrequency = mapFromLog10 (centreFrequency, static_cast<SampleType> (20.0), static_cast<SampleType> (jmin (20000.0, 0.49 * sampleRate)));
 }
 
 template <typename SampleType>

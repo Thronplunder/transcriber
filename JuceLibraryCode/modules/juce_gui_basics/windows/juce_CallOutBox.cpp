@@ -2,15 +2,15 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2020 - Raw Material Software Limited
+   Copyright (c) 2022 - Raw Material Software Limited
 
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   End User License Agreement: www.juce.com/juce-6-licence
+   End User License Agreement: www.juce.com/juce-7-licence
    Privacy Policy: www.juce.com/juce-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
@@ -40,9 +40,7 @@ CallOutBox::CallOutBox (Component& c, Rectangle<int> area, Component* const pare
     else
     {
         setAlwaysOnTop (juce_areThereAnyAlwaysOnTopWindows());
-
-        updatePosition (area, Desktop::getInstance().getDisplays().findDisplayForRect (area).userArea);
-
+        updatePosition (area, Desktop::getInstance().getDisplays().getDisplayForRect (area)->userArea);
         addToDesktop (ComponentPeer::windowIsTemporary);
 
         startTimer (100);
@@ -51,15 +49,14 @@ CallOutBox::CallOutBox (Component& c, Rectangle<int> area, Component* const pare
     creationTime = Time::getCurrentTime();
 }
 
-CallOutBox::~CallOutBox() = default;
-
 //==============================================================================
 class CallOutBoxCallback  : public ModalComponentManager::Callback,
                             private Timer
 {
 public:
-    CallOutBoxCallback (Component* c, const Rectangle<int>& area, Component* parent)
-        : content (c), callout (*c, area, parent)
+    CallOutBoxCallback (std::unique_ptr<Component> c, const Rectangle<int>& area, Component* parent)
+        : content (std::move (c)),
+          callout (*content, area, parent)
     {
         callout.setVisible (true);
         callout.enterModalState (true, this);
@@ -70,7 +67,7 @@ public:
 
     void timerCallback() override
     {
-        if (! Process::isForegroundProcess())
+        if (! isForegroundOrEmbeddedProcess (&callout))
             callout.dismiss();
     }
 
@@ -80,11 +77,11 @@ public:
     JUCE_DECLARE_NON_COPYABLE (CallOutBoxCallback)
 };
 
-CallOutBox& CallOutBox::launchAsynchronously (Component* content, Rectangle<int> area, Component* parent)
+CallOutBox& CallOutBox::launchAsynchronously (std::unique_ptr<Component> content, Rectangle<int> area, Component* parent)
 {
     jassert (content != nullptr); // must be a valid content component!
 
-    return (new CallOutBoxCallback (content, area, parent))->callout;
+    return (new CallOutBoxCallback (std::move (content), area, parent))->callout;
 }
 
 //==============================================================================
@@ -99,7 +96,11 @@ int CallOutBox::getBorderSize() const noexcept
     return jmax (getLookAndFeel().getCallOutBoxBorderSize (*this), (int) arrowSize);
 }
 
-void CallOutBox::lookAndFeelChanged() { resized(); repaint(); }
+void CallOutBox::lookAndFeelChanged()
+{
+    resized();
+    repaint();
+}
 
 void CallOutBox::paint (Graphics& g)
 {
@@ -158,7 +159,7 @@ void CallOutBox::setDismissalMouseClicksAreAlwaysConsumed (bool b) noexcept
     dismissalMouseClicksAreAlwaysConsumed = b;
 }
 
-enum { callOutBoxDismissCommandId = 0x4f83a04b };
+static constexpr int callOutBoxDismissCommandId = 0x4f83a04b;
 
 void CallOutBox::handleCommandMessage (int commandId)
 {
@@ -193,9 +194,8 @@ void CallOutBox::updatePosition (const Rectangle<int>& newAreaToPointTo, const R
     availableArea = newAreaToFitIn;
 
     auto borderSpace = getBorderSize();
-
-    Rectangle<int> newBounds (content.getWidth()  + borderSpace * 2,
-                              content.getHeight() + borderSpace * 2);
+    auto newBounds = getLocalArea (&content, Rectangle<int> (content.getWidth()  + borderSpace * 2,
+                                                             content.getHeight() + borderSpace * 2));
 
     auto hw = newBounds.getWidth() / 2;
     auto hh = newBounds.getHeight() / 2;
@@ -250,7 +250,7 @@ void CallOutBox::refreshPath()
 
     const float gap = 4.5f;
 
-    outline.addBubble (content.getBounds().toFloat().expanded (gap, gap),
+    outline.addBubble (getLocalArea (&content, content.getLocalBounds().toFloat()).expanded (gap, gap),
                        getLocalBounds().toFloat(),
                        targetPoint - getPosition().toFloat(),
                        getLookAndFeel().getCallOutBoxCornerSize (*this), arrowSize * 0.7f);
@@ -260,6 +260,12 @@ void CallOutBox::timerCallback()
 {
     toFront (true);
     stopTimer();
+}
+
+//==============================================================================
+std::unique_ptr<AccessibilityHandler> CallOutBox::createAccessibilityHandler()
+{
+    return std::make_unique<AccessibilityHandler> (*this, AccessibilityRole::dialogWindow);
 }
 
 } // namespace juce
