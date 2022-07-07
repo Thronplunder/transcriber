@@ -60,7 +60,6 @@ target_sources(Transcriber
     Source/Main.cpp
     Source/MainComponent.cpp
     Source/AudioFFT.cpp
-    Source/HPS.cpp
     )
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
