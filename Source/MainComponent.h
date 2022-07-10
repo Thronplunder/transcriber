@@ -7,6 +7,7 @@
 #include "AudioFFT.h"
 #include "ComplexVector.h"
 #include "ControlComponent.h"
+#include "OLAStretch.h"
 
 //==============================================================================
 /*
@@ -23,7 +24,7 @@ class MainComponent  : public juce::AudioAppComponent,
 public:
     //==============================================================================
     MainComponent();
-    ~MainComponent() override;
+    ~MainComponent() override ;
 
     //==============================================================================
     void prepareToPlay (int samplesPerBlockExpected, double sampleRate) override;
@@ -105,5 +106,6 @@ private:
     audiofft::AudioFFT fft;
     ComplexVector<float> fftResultLeft, fftResultRight;
 
+    OLAStretch<float> olatimestretch;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
