@@ -6,7 +6,7 @@
 template<typename T>
 class baseStretch{
     public:
-    baseStretch(unsigned int windowSize, unsigned int sampleRate, unsigned int bufferSize)
+    baseStretch(unsigned int windowSize, unsigned int bufferSize)
     : analysisFrameSize(windowSize),
     analysisHopSize(windowSize / 2),
     synthesisHopsize(windowSize/ 2),
@@ -23,21 +23,24 @@ class baseStretch{
         fft.init(analysisFrameSize);
         fftResult.resize(fft.ComplexSize(analysisFrameSize));
     }
-    ;
+    
     virtual void process(T* Data, unsigned int dataLength){
-    };
+    }
 
     void changeStretchValue(float newValue){
         stretchValue = newValue;
         analysisHopSize =  synthesisHopsize / stretchValue;
         reset();
-    };
+    }
 
     void changeBufferSize(unsigned int newSize){
         outputBuffer.resize(newSize);
         outputBuffer.clear();
         reset();
     }
+
+    void fillAnalysisFrame();
+    void fillOutputBuffer();
 
     void changeAnalysisSize(unsigned int newSize){
         analysisFrameSize = newSize;
@@ -47,14 +50,14 @@ class baseStretch{
         analysisFrame.resize(newSize);
         window.resize(newSize);
         reset();
-    };
+    }
     void reset(){
         inBufferPointer = 0;
         inputHopCounter = 0;
         outbufferReadPointer = 0;
         outBufferWritePointer = analysisFrameSize;
         outBufferHopCounter = 0;
-    };
+    }
 
     protected:
     unsigned int analysisHopSize, analysisFrameSize, synthesisHopsize;

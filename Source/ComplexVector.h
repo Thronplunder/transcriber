@@ -15,9 +15,9 @@
 template<typename T>
 class ComplexVector {
 public:
-    ComplexVector(unsigned int length): real(length), imag(length), length(length) {
+    ComplexVector(unsigned int firstLength): real(length), imag(length), length(firstLength) {
 
-    };
+    }
     //return vectors
     std::vector<T>& getReal() {
         return real;
