@@ -28,7 +28,7 @@ public:
 
         //sets buffers to initial size and fills them 
         resize(length);
-    };
+    }
 
     void applyWindow(T* buffer, unsigned int length, windowType type) {
         switch (type) {
@@ -48,7 +48,7 @@ public:
                 }
                 break;
         }
-    };
+    }
 
     void resize(unsigned int newSize) {
         hannBuffer.resize(newSize);
