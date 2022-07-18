@@ -3,21 +3,19 @@
 #include "WindowFunction.h"
 #include <vector>
 
-template <typename T> class baseStretch {
+class baseStretch {
 public:
   baseStretch(unsigned int windowSize, unsigned int bufferSize)
       : analysisFrameSize(windowSize), analysisHopSize(windowSize / 2),
         synthesisHopsize(windowSize / 2), inBufferPointer(0),
         inputHopCounter(0), outbufferReadPointer(0), outBufferHopCounter(0),
-        outBufferWritePointer(analysisHopSize), stretchValue(1.0) {
+        outBufferWritePointer(analysisHopSize), stretchValue(1.0), window(windowSize) {
     inputBuffer.resize(3 * windowSize);
     outputBuffer.resize(bufferSize);
     analysisFrame.resize(analysisFrameSize);
-    fft.init(analysisFrameSize);
-    fftResult.resize(fft.ComplexSize(analysisFrameSize));
   }
 
-  virtual void process(T *Data, unsigned int dataLength);
+  virtual void process(float *data, unsigned int dataLength);
 
   void changeStretchValue(float newValue) {
     stretchValue = newValue;
@@ -38,7 +36,12 @@ public:
         bufferPointer = (bufferPointer + 1) % inputBuffer.size();
     };
   }
-  void fillOutputBuffer();
+  void fillOutputBuffer(){
+    for(auto it : analysisFrame){
+      outputBuffer[outBufferWritePointer] = it;
+      outBufferWritePointer = (outBufferWritePointer + 1) % outputBuffer.size();
+    }
+  };
 
   void changeAnalysisSize(unsigned int newSize) {
     analysisFrameSize = newSize;
@@ -62,8 +65,6 @@ protected:
   unsigned int inBufferPointer, inputHopCounter;
   unsigned int outbufferReadPointer, outBufferWritePointer, outBufferHopCounter;
   float stretchValue;
-  std::vector<T> inputBuffer, outputBuffer, analysisFrame;
-  Window<T> window;
-  audiofft::AudioFFT fft;
-  ComplexVector<T> fftResult;
+  std::vector<float> inputBuffer, outputBuffer, analysisFrame;
+  Window<float> window;
 };
